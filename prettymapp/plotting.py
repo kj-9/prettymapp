@@ -51,6 +51,7 @@ class Plot:
     bg_shape: str = "rectangle"
     bg_buffer: int = 2
     bg_color: str = "#F2F4CB"
+    dpi: int = 1200
 
     def __post_init__(self):
         (
@@ -69,7 +70,7 @@ class Plot:
         self.bg_buffer_y = (self.bg_buffer / 100) * self.ydif
 
         self.fig, self.ax = subplots(
-            1, 1, figsize=(12, 12), constrained_layout=True, dpi=1200
+            1, 1, figsize=(12, 12), constrained_layout=True, dpi=self.dpi
         )
         self.ax.set_aspect(1 / np.cos(self.ymid * np.pi / 180))
 
