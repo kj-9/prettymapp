@@ -22,9 +22,22 @@ setup(
     ],
     include_package_data=True,
     zip_safe=False,
-    install_requires=parent_dir.joinpath("requirements.txt")
-    .read_text(encoding="utf-8")
-    .splitlines(),
+    install_requires=[
+        "pandas==1.5.2",  # osmnx subdependecies are partially unpinned
+        "numpy==1.23.5",
+        "matplotlib==3.6.2",
+        "osmnx==1.2.3",
+    ],
+    extras_require={
+        "test": [
+            "pre-commit",
+            "mock",
+            "types-mock",
+            "pytest",
+            "pytest-sugar",
+            "twine",
+        ]
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
