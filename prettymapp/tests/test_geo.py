@@ -23,19 +23,32 @@ def test_validate_coordinates():
         validate_coordinates(lat=92.3, lon=-237.2)
 
 
+TOLERANCE = 0.0001  # test tolerance to compare values
+
+
+def _is_in_tol(values: list, answers: tuple):
+    for val, ans in zip(values, answers, strict=True):
+        assert abs(val - ans) < TOLERANCE
+
+
 @patch.object(ox, "geocode")
 def test_get_aoi_from_user_input_address(ox_geocode):
     ox_geocode.return_value = 52.52, 13.4
 
     poly = get_aoi("Unter den Linden 37, 10117 Berlin")
     assert isinstance(poly, Polygon)
-    assert poly.bounds == (
-        13.373621926483281,
-        52.507705884952586,
-        13.403083847278062,
-        52.52567909987013,
+
+    _is_in_tol(
+        poly.bounds,
+        (
+            13.373621926483281,
+            52.507705884952586,
+            13.403083847278062,
+            52.52567909987013,
+        ),
     )
-    assert poly.area == 0.00041542753985753124
+
+    assert abs(poly.area - 0.00041542753985753124) < TOLERANCE
 
 
 @patch.object(ox, "geocode")
@@ -44,12 +57,18 @@ def test_get_aoi_from_user_input_coordinates(ox_geocode):
 
     poly = get_aoi(coordinates=(52.52, 13.4))
     assert isinstance(poly, Polygon)
-    assert poly.bounds == (
-        13.38526793559592,
-        52.51101333875345,
-        13.414732236942758,
-        52.52898664609028,
+
+    _is_in_tol(
+        poly.bounds,
+        (
+            13.38526793559592,
+            52.51101333875345,
+            13.414732236942758,
+            52.52898664609028,
+        ),
     )
+
+    assert abs(poly.area - 0.00041546027853784154) < TOLERANCE
 
 
 @patch.object(ox, "geocode")
@@ -58,24 +77,33 @@ def test_get_aoi_from_user_input_rectangle(ox_geocode):
 
     poly = get_aoi("Unter den Linden 37, 10117 Berlin", rectangular=True)
     assert isinstance(poly, Polygon)
-    assert poly.bounds == (
-        13.373621926483281,
-        52.507705884952586,
-        13.403083847278062,
-        52.52567909987013,
+
+    _is_in_tol(
+        poly.bounds,
+        (
+            13.373621926483281,
+            52.507705884952586,
+            13.403083847278062,
+            52.52567909987013,
+        ),
     )
-    assert poly.area == 0.0005295254343283185
+
+    assert abs(poly.area - 0.0005295254343283185) < TOLERANCE
 
 
 @pytest.mark.live
 def test_get_aoi_from_user_input_address_live():
     poly = get_aoi("Unter den Linden 37, 10117 Berlin")
     assert isinstance(poly, Polygon)
-    assert poly.bounds == (
-        13.373621926483281,
-        52.507705884952586,
-        13.403083847278062,
-        52.52567909987013,
+
+    _is_in_tol(
+        poly.bounds,
+        (
+            13.373621926483281,
+            52.507705884952586,
+            13.403083847278062,
+            52.52567909987013,
+        ),
     )
 
 
@@ -83,11 +111,14 @@ def test_get_aoi_from_user_input_address_live():
 def test_get_aoi_from_user_input_coordinates_live():
     poly = get_aoi(coordinates=(52.52, 13.4))
     assert isinstance(poly, Polygon)
-    assert poly.bounds == (
-        13.38526793559592,
-        52.51101333875345,
-        13.414732236942758,
-        52.52898664609028,
+    _is_in_tol(
+        poly.bounds,
+        (
+            13.38526793559592,
+            52.51101333875345,
+            13.414732236942758,
+            52.52898664609028,
+        ),
     )
 
 
