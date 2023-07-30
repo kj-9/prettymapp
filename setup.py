@@ -17,9 +17,6 @@ setup(
         exclude=("prettymapp/tests", "streamlit-prettymapp", "cache")
     ),
     package_data={"": ["fonts/PermanentMarker-Regular.ttf"]},
-    data_files=[
-        ("", ["requirements.txt"]),
-    ],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
@@ -35,7 +32,6 @@ setup(
             "types-mock",
             "pytest",
             "pytest-sugar",
-            "twine",
         ]
     },
     classifiers=[
@@ -45,5 +41,5 @@ setup(
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.10",
 )
