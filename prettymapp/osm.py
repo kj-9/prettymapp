@@ -10,9 +10,9 @@ settings.use_cache = True
 settings.log_console = False
 
 
-def get_osm_geometries(aoi: Polygon) -> GeoDataFrame:
+def get_osm_geometries(aoi: Polygon, landclass: dict = LC_SETTINGS) -> GeoDataFrame:
     tags: dict = {}
-    for d in LC_SETTINGS.values():  # type: ignore
+    for d in landclass.values():  # type: ignore
         for k, v in d.items():  # type: ignore
             try:
                 tags.setdefault(k, []).extend(v)
@@ -27,7 +27,7 @@ def get_osm_geometries(aoi: Polygon) -> GeoDataFrame:
     df = explode_multigeometries(df)
 
     df["landcover_class"] = None
-    for lc_class, osm_tags in LC_SETTINGS.items():
+    for lc_class, osm_tags in landclass.items():
         tags_in_columns = list(set(osm_tags.keys()).intersection(list(df.columns)))  # type: ignore
         mask_lc_class = df[tags_in_columns].notna().sum(axis=1) != 0
         # Remove mask elements that belong to other subtag
