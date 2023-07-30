@@ -23,7 +23,7 @@ setup(
         "pandas==1.5.2",  # osmnx subdependecies are partially unpinned
         "numpy==1.23.5",
         "matplotlib==3.6.2",
-        "osmnx==1.2.3",
+        "osmnx==1.6.0",
     ],
     extras_require={
         "test": [
