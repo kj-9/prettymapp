@@ -1,7 +1,7 @@
 import pytest
 from geopandas import GeoDataFrame
-from shapely.geometry import box
 from pyproj import CRS
+from shapely.geometry import box
 
 from prettymapp.osm import get_osm_geometries
 from prettymapp.plotting import Plot

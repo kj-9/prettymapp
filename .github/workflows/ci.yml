@@ -1,0 +1,32 @@
+name: Test
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      if: hashFiles('setup.py')
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: pip
+        cache-dependency-path: '**/setup.py'
+    - name: Install dependencies
+      if: hashFiles('setup.py')
+      run: |
+        pip install -e '.[test]'
+    - name: Run tests
+      if: hashFiles('setup.py')
+      run: make 'test[live]'
+    - name: Run lint and format
+      run: make pre-commit
+    - name: Run build
+      run: make package

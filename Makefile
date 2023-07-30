@@ -1,26 +1,42 @@
+SHELL=/bin/bash
+
+.PHONY:
+	pip-upgrade
+	test
+	test[live]
+	pre-commit
+	setup
+	setup-dev
+	package
+	upload
+	clean
+
+pip-upgrade:
+	python -m pip install --upgrade pip
+
 test:
 	-rm -r .pytest_cache
-	black .
-	python -m pytest --pylint --pylint-rcfile=../../pylintrc --mypy --mypy-ignore-missing-imports --durations=3
+	python -m pytest -vv --durations=3
 
 test[live]:
 	-rm -r .pytest_cache
-	black .
-	python -m pytest --pylint --pylint-rcfile=../../pylintrc --mypy --mypy-ignore-missing-imports --runlive --durations=5
+	python -m pytest -vv --runlive --durations=5
+
+pre-commit:
+	pre-commit run --all-files --show-diff-on-failure
 
 setup:
-	pip install -r requirements.txt
-	pip install -r streamlit-prettymapp/requirements.txt
+	pip install -e .
 
 setup-dev:
-	pip install -r requirements.txt
-	pip install -r requirements-dev.txt
-	pip install -e .
+	pip install -e '.[test]'
 	pip install streamlit
 
 package:
-	python setup.py sdist bdist_wheel
-	twine check dist/*
+	python -m pip install --upgrade pip setuptools wheel
+	python -m pip install build twine
+	python -m pip list
+	python -m build --outdir dist/ .
 
 upload:
 	twine upload --skip-existing dist/*
