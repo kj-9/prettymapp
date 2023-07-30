@@ -1,6 +1,6 @@
 from geopandas import GeoDataFrame, clip
 from osmnx import settings
-from osmnx.geometries import geometries_from_polygon
+from osmnx.features import features_from_polygon
 from shapely.geometry import Polygon
 
 from prettymapp.geo import explode_multigeometries
@@ -19,7 +19,7 @@ def get_osm_geometries(aoi: Polygon, landclass: dict = LC_SETTINGS) -> GeoDataFr
             except TypeError:  # e.g. "building": True
                 tags[k] = v
 
-    df = geometries_from_polygon(polygon=aoi, tags=tags)
+    df = features_from_polygon(polygon=aoi, tags=tags)
     df = df.droplevel(level=0)
     df = df[~df.geometry.geom_type.isin(["Point", "MultiPoint"])]
 
