@@ -1,10 +1,8 @@
-from typing import Tuple, Optional
-
-from osmnx.geocoder import geocode
-from geopandas import GeoDataFrame
 import pandas as pd
+from geopandas import GeoDataFrame
+from osmnx.geocoder import geocode
 from pandas import DataFrame
-from shapely.geometry import Polygon, Point, box
+from shapely.geometry import Point, Polygon, box
 
 
 class GeoCodingError(Exception):
@@ -20,8 +18,8 @@ def validate_coordinates(lat: float, lon: float) -> None:
 
 
 def get_aoi(
-    address: Optional[str] = None,
-    coordinates: Optional[Tuple[float, float]] = None,
+    address: str | None = None,
+    coordinates: tuple[float, float] | None = None,
     radius: int = 1000,
     rectangular: bool = False,
 ) -> Polygon:
@@ -78,10 +76,13 @@ def explode_multigeometries(df: GeoDataFrame) -> GeoDataFrame:
     df_multi = df[mask]
     for _, row in df_multi.iterrows():
         df_temp = GeoDataFrame(
-            pd.DataFrame.from_records([row.to_dict()] * len(row.geometry.geoms)), crs="EPSG:4326"
+            pd.DataFrame.from_records([row.to_dict()] * len(row.geometry.geoms)),
+            crs="EPSG:4326",
         )
         df_temp.geometry = list(row.geometry.geoms)
-        outdf = GeoDataFrame(pd.concat([outdf, df_temp], ignore_index=True), crs="EPSG:4326")
+        outdf = GeoDataFrame(
+            pd.concat([outdf, df_temp], ignore_index=True), crs="EPSG:4326"
+        )
 
     outdf = outdf.reset_index(drop=True)
     return outdf

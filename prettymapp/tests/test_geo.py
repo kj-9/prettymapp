@@ -1,15 +1,16 @@
-from mock import patch
-import pytest
-from shapely.geometry import Polygon, MultiPolygon
-import osmnx as ox
+from unittest.mock import patch
+
 import geopandas as gpd
+import osmnx as ox
 import pandas as pd
+import pytest
+from shapely.geometry import MultiPolygon, Polygon
 
 from prettymapp.geo import (
-    validate_coordinates,
-    get_aoi,
     GeoCodingError,
     explode_multigeometries,
+    get_aoi,
+    validate_coordinates,
 )
 
 

@@ -1,21 +1,20 @@
-from pathlib import Path
 import colorsys
-from typing import Tuple, List
 from dataclasses import dataclass
+from pathlib import Path
 
-from geopandas.plotting import _plot_polygon_collection, _plot_linestring_collection
-from geopandas import GeoDataFrame
-import numpy as np
-from matplotlib.colors import ListedColormap, cnames, to_rgb
-from matplotlib.pyplot import subplots, Rectangle
 import matplotlib.font_manager as fm
-from matplotlib.patches import Ellipse
 import matplotlib.patheffects as PathEffects
+import numpy as np
+from geopandas import GeoDataFrame
+from geopandas.plotting import _plot_linestring_collection, _plot_polygon_collection
+from matplotlib.colors import ListedColormap, cnames, to_rgb
+from matplotlib.patches import Ellipse
+from matplotlib.pyplot import Rectangle, subplots
 
 from prettymapp.settings import STREETS_WIDTH
 
 
-def adjust_lightness(color: str, amount: float = 0.5) -> Tuple[float, float, float]:
+def adjust_lightness(color: str, amount: float = 0.5) -> tuple[float, float, float]:
     """
     In-/Decrease color brightness amount by factor.
 
@@ -35,7 +34,7 @@ def adjust_lightness(color: str, amount: float = 0.5) -> Tuple[float, float, flo
 @dataclass
 class Plot:
     df: GeoDataFrame
-    aoi_bounds: List[
+    aoi_bounds: list[
         float
     ]  # Not df bounds as could lead to weird plot shapes with unequal geometry distribution.
     draw_settings: dict

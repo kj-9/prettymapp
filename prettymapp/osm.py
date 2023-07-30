@@ -1,6 +1,6 @@
-from osmnx.geometries import geometries_from_polygon
+from geopandas import GeoDataFrame, clip
 from osmnx import settings
-from geopandas import clip, GeoDataFrame
+from osmnx.geometries import geometries_from_polygon
 from shapely.geometry import Polygon
 
 from prettymapp.geo import explode_multigeometries
